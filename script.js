@@ -19,3 +19,14 @@ const gameboard = (function() {
 
 })();
 
+function createPlayer(name, symbol) {
+  const selectMove = function(row, col) {
+    gameboard.setArr(symbol, row, col)
+  }
+
+  const getName = () => name;
+  const getSymbol = () => symbol;
+
+  return { getName, getSymbol, selectMove }
+}
+
