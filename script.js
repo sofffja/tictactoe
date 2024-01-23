@@ -1,8 +1,8 @@
 const gameboard = (function() {
   let board = [
-    ['','',''],
-    ['','',''],
-    ['','','']
+    ['x','x','o'],
+    ['o','o','o'],
+    ['x','o','x']
   ];
 
   const setBoard = (symbol, row, col) => {
@@ -15,6 +15,14 @@ const gameboard = (function() {
 
   const getBoard = () => board;
 
+  const resetBoard = () => {
+    board = [
+      ['','',''],
+      ['','',''],
+      ['','','']
+    ];
+  }
+
   const isFull = () => {
     for (const row of board) {
       for (const column of row) {
@@ -22,14 +30,6 @@ const gameboard = (function() {
       }
     }
     return true;
-  }
-
-  const resetBoard = () => {
-    board = [
-      ['','',''],
-      ['','',''],
-      ['','','']
-    ];
   }
 
   const getWinCases = () => {
@@ -45,7 +45,16 @@ const gameboard = (function() {
       isWinCase(board[0][0], board[1][1], board[2][2]),
       isWinCase(board[0][2], board[1][1], board[2][0])
     ]
-  } 
+  }
+
+  function isWinCase(){
+    var len = arguments.length;
+    for (var i = 1; i< len; i++){
+       if (arguments[i] === null || arguments[i] !== arguments[i-1])
+          return false;
+    }
+    return { win: true, symbol: arguments[0] };
+  }
 
   return { getBoard, setBoard, isFull, getWinCases, resetBoard };
 
@@ -59,10 +68,10 @@ const game = (function() {
     for (let i = 1; i <= 9; i++) {
       if (!checkWinner()) {
         if (i % 2 !== 0) {
-          playerOne.selectMove(prompt(`player one, choose row`), prompt(`player one, choose column`));
+          playerOne.selectMove(prompt(`${playerOne.getName()}, choose row`), prompt(`${playerOne.getName()}, choose column`));
           console.table(gameboard.getBoard())
         } else {
-          playerTwo.selectMove(prompt(`player two, choose row`), prompt(`player two, choose column`));
+          playerTwo.selectMove(prompt(`${playerTwo.getName()}, choose row`), prompt(`${playerTwo.getName()}, choose column`));
           console.table(gameboard.getBoard())
         }
       } else if (checkWinner() === 'tie') {
@@ -98,13 +107,4 @@ function createPlayer(name, symbol) {
   const getSymbol = () => symbol;
 
   return { getName, getSymbol, selectMove }
-}
-
-function isWinCase(){
-  var len = arguments.length;
-  for (var i = 1; i< len; i++){
-     if (arguments[i] === null || arguments[i] !== arguments[i-1])
-        return false;
-  }
-  return { win: true, symbol: arguments[0] };
 }
