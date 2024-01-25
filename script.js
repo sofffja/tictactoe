@@ -128,14 +128,23 @@ const screenHandler = (function() {
       return
     };
 
-    e.target.textContent = game.getCurrentSymbol();
-    game.play(row, col);
+    game.play(row, col)
+    fillBoard();
+    
+  }
+
+  const fillBoard = () => {
+    let count = 0;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        boardCell[count].textContent = gameboard.getBoard()[i][j]
+        count++
+      }
+    }
   }
 
   const clearScreen = () => {
-    for (let div of boardCell) {
-      div.textContent = '';
-    }
+    fillBoard();
     displayDiv.textContent = 'tres en raya';
   }
 
