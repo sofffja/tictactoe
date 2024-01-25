@@ -62,24 +62,43 @@ const gameboard = (function() {
 const game = (function() {
   const playerOne = createPlayer('A', 'x')
   const playerTwo = createPlayer('B', playerOne.getSymbol() === 'x' ? 'o' : 'x');
-
   let currentPlayer = playerOne;
+  let ended;
 
   const getCurrentSymbol = () => currentPlayer.getSymbol();
 
   const play = (row, col) => {
     gameboard.setBoard(getCurrentSymbol(), row, col);
 
-    if(gameboard.isWin() !== false) {
-      return gameboard.isWin();
+    if(gameboard.isWin()) {
+      let winner = gameboard.isWin().symbol === 'x' ? playerOne.getName() : playerTwo.getName()
+      screenHandler.updateDisplayWin(winner);
+      ended = true;
     } else if (gameboard.isFull()) {
-      return 'ties';
+      screenHandler.updateDisplayTie();
+      ended = true;
+    } else {
+      changePlayer();
     }
 
+  }
+
+  function resetGame() {
+    currentPlayer = playerOne;
+    gameboard.resetBoard();
+    screenHandler.clearScreen();
+    ended = false;
+  }
+
+  function changePlayer() {
     currentPlayer = (currentPlayer === playerOne) ? playerTwo : playerOne;
   }
 
-  return { play, getCurrentSymbol }
+  const isEnded = () => {
+    return ended;
+  }
+
+  return { play, getCurrentSymbol, resetGame, isEnded }
 })();
 
 function createPlayer(name, symbol) {
@@ -89,7 +108,48 @@ function createPlayer(name, symbol) {
   return { getName, getSymbol }
 };
 
-const screen = (function() {
+const screenHandler = (function() {
+  const boardDiv = document.querySelector('.gameboard');
+  const boardCell = document.querySelectorAll('.gameboard-cell');
+  const displayDiv = document.querySelector('.display');
+  const newgameBtn = document.querySelector('.newgame')
 
-})
+  const updateScreenBoard = (e) => {
+    let row = e.target.parentElement.getAttribute('row');
+    let col = e.target.getAttribute('col');
+
+    if (gameboard.getBoard()[row][col] !== '' || game.isEnded()) {
+      return
+    };
+
+    e.target.textContent = game.getCurrentSymbol();
+    game.play(row, col);
+  }
+
+  const clearScreen = () => {
+    for (let div of boardCell) {
+      div.textContent = '';
+    }
+    displayDiv.textContent = 'tres en raya';
+  }
+
+  const updateDisplayWin = (name) => {
+    displayDiv.textContent = `winner is ${name}`
+  }
+
+  const updateDisplayTie = () => {
+    displayDiv.textContent = `it's a tie, try again`
+  }
+
+  const setNewgame = () => {
+    game.resetGame();
+  }
+
+  const setEvents = function() {
+    boardDiv.addEventListener('click', updateScreenBoard);
+    newgameBtn.addEventListener('click', setNewgame)
+  }();
+
+  return { clearScreen, updateDisplayWin, updateDisplayTie }
+})();
 
