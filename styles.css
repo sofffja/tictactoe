@@ -46,7 +46,7 @@
   background-color: #eee;
   display: grid;
   place-items: center;
-  font-size: 5rem;
+  font-size: calc(var(--grid-size)*0.75);
 }
 
 .newgame {
