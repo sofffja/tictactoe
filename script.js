@@ -139,7 +139,8 @@ const screenHandler = (function() {
   }
 
   const updateDisplayTie = () => {
-    displayDiv.textContent = `it's a tie, try again`
+    displayDiv.classList.add('endgame');
+    displayDiv.textContent = `it's a tie, try again`;
   }
 
   const setNewgame = () => {
@@ -149,7 +150,7 @@ const screenHandler = (function() {
 
   const setEvents = function() {
     boardDiv.addEventListener('click', updateScreenBoard);
-    newgameBtn.addEventListener('click', setNewgame)
+    newgameBtn.addEventListener('click', setNewgame);
   }();
 
   return { clearScreen, updateDisplayWin, updateDisplayTie }
