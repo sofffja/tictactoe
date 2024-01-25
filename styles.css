@@ -46,7 +46,7 @@
   background-color: #eee;
   display: grid;
   place-items: center;
-  font-size: 2rem;
+  font-size: 5rem;
 }
 
 .newgame {
@@ -54,4 +54,13 @@
   height: 3rem;
   background-color: black;
   color: white;
+}
+
+.newgame:hover {
+  background-color: #1d1d1d;
+}
+
+.endgame {
+  background-color: #000;
+  color: #fff;
 }

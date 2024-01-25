@@ -135,6 +135,7 @@ const screenHandler = (function() {
 
   const updateDisplayWin = (name) => {
     displayDiv.textContent = `winner is ${name}`
+    displayDiv.classList.add('endgame');
   }
 
   const updateDisplayTie = () => {
@@ -142,6 +143,7 @@ const screenHandler = (function() {
   }
 
   const setNewgame = () => {
+    displayDiv.classList.remove('endgame');
     game.resetGame();
   }
 
