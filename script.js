@@ -60,10 +60,14 @@ const gameboard = (function() {
 })();
 
 const game = (function() {
-  const playerOne = createPlayer('A', 'x')
-  const playerTwo = createPlayer('B', playerOne.getSymbol() === 'x' ? 'o' : 'x');
-  let currentPlayer = playerOne;
+  let playerOne, playerTwo, currentPlayer;
   let ended;
+
+  const initPlayers = (nameOne, nameTwo) => {
+    playerOne = createPlayer(nameOne, 'x');
+    playerTwo = createPlayer(nameTwo, 'o');
+    currentPlayer = playerOne;
+  }
 
   const getCurrentSymbol = () => currentPlayer.getSymbol();
 
@@ -94,11 +98,9 @@ const game = (function() {
     currentPlayer = (currentPlayer === playerOne) ? playerTwo : playerOne;
   }
 
-  const isEnded = () => {
-    return ended;
-  }
+  const isEnded = () => ended;
 
-  return { play, getCurrentSymbol, resetGame, isEnded }
+  return { play, getCurrentSymbol, resetGame, isEnded, initPlayers }
 })();
 
 function createPlayer(name, symbol) {
@@ -112,7 +114,11 @@ const screenHandler = (function() {
   const boardDiv = document.querySelector('.gameboard');
   const boardCell = document.querySelectorAll('.gameboard-cell');
   const displayDiv = document.querySelector('.display');
-  const newgameBtn = document.querySelector('.newgame')
+  const newgameBtn = document.querySelector('.newgame');
+  
+  const closeModalBtn = document.querySelector('.ok');
+  const playerOneInput = document.querySelector('#p1-name');
+  const playerTwoInput = document.querySelector('#p2-name');
 
   const updateScreenBoard = (e) => {
     let row = e.target.parentElement.getAttribute('row');
@@ -151,6 +157,10 @@ const screenHandler = (function() {
   const setEvents = function() {
     boardDiv.addEventListener('click', updateScreenBoard);
     newgameBtn.addEventListener('click', setNewgame);
+
+    closeModalBtn.addEventListener('click', () => {
+      game.initPlayers(playerOneInput.value, playerTwoInput.value)
+    })
   }();
 
   return { clearScreen, updateDisplayWin, updateDisplayTie }

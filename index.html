@@ -7,6 +7,24 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="body">
+  <dialog open>
+    <div class="dialog-title">enter player names</div>
+
+    <form class="dialog-form" method="dialog">
+      <div class="form-item">
+        <label for="p1-name">'X' player name:</label>
+        <input type="text" name="p1-name" id="p1-name">
+      </div>
+
+      <div class="form-item">
+        <label for="p2-name">'O' player name:</label>
+        <input type="text" name="p2-name" id="p2-name">
+      </div>
+
+      <button class="button ok" id="submit" value="default">OK</button>
+    </form>
+  </dialog>
+  
   <div class="interfaz">
     <div class="display">tres en raya</div>
     <div class="gameboard">
